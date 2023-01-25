@@ -1,39 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Home</title>
+	<title>Bríd O'Donnell</title>
   <link href="\_CSS\styles.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-	<div class="w3-top">
-	  <div class="w3-bar w3-black w3-card">
-	    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="mobileNav()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-	    <a href="home.html" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-			<a href="experience.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">EXPERIENCE</a>
-			<a href="skills.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">SKILLS</a>
-	    <a href="volunteer.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">VOLUNTEER WORK</a>
-	    <div class="w3-dropdown-hover w3-hide-small">
-	      <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>
-	      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-	        <a href="impossible.html" class="w3-bar-item w3-button">IMPOSSIBLE LIST</a>
-					<a href="projects.html" class="w3-bar-item w3-button">PROJECTS</a>
-					<a href="notes.html" class="w3-bar-item w3-button">MY NOTES</a>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-
-	<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
-	  <a href="experience.html" class="w3-bar-item w3-button w3-padding-large" onclick="mobileNav()">EXPERIENCE</a>
-		<a href="skills.html" class="w3-bar-item w3-button w3-padding-large" onclick="mobileNav()">SKILLS</a>
-		<a href="volunteer.html" class="w3-bar-item w3-button w3-padding-large" onclick="mobileNav()">VOLUNTEER WORK</a>
-		<a href="impossible.html" class="w3-bar-item w3-button w3-padding-large" onclick="mobileNav()">IMPOSSIBLE LIST</a>
-		<a href="projects.html" class="w3-bar-item w3-button w3-padding-large" onclick="mobileNav()">PROJECTS</a>
-		<a href="notes.html" class="w3-bar-item w3-button w3-padding-large" onclick="mobileNav()">MY NOTES</a>
-	</div>
 	<div style="background-color: #AC3B61; padding-top: 15px">
 		<header class="w3-display-container w3-content" id="home">
 			<img class="w3-image w3-card" src="/_IMG/heroImage.jpg" alt="It's me!" width="1600" height="800">
@@ -42,68 +16,5 @@
 			</br>
 		</header>
 	</div>
-
-	<div class="w3-content">
-		<div class="w3-content w3-margin-top" style="max-width:1400px;">
-		  <!-- The Grid -->
-		  <div class="w3-row-padding">
-				<div class="w3-panel w3-card w3-center">
-					<p>I am Auditor (Chairperson) of the College Historical Society, as known as the Hist. The Hist is a debating society,
-						one of Trinity's largest society (with 10,000 members), and the oldest student society in the world, founded over 250 years ago.
-						I will be taking a sabbatical year out of degree to fully focus on the auditorship. </p>
-					</br>
-					<p>As a Management Science and Information Systems Studies student at Trinity College Dublin,
-						I am fascinated by how technology can change the world of business and our society. In particular,
-						I am also interested in how, through legal and economic policies,
-						we should regulate the tech industry to ensure we are creating a fair society. </p>
-					</br>
-					<p>I am an avid and confident debater and I have ample experience in the corporate world,
-						having completed a number of internships and a Spring week.
-					</p>
-		  </div>
-		</div>
-	</div>
-	<footer class="w3-container w3-teal w3-center w3-margin-top">
-		<br>
-		<a href="contact.html" class="w3-button w3-black"><h6>Contact Me</h6></a>
-    <p>Website created by Bríd O'Donnell</p>
-		<br>
-  </footer>
-<script>
-		// Automatic Slideshow - change image every 4 seconds
-		var myIndex = 0;
-		carousel();
-
-		function carousel() {
-		  var i;
-		  var x = document.getElementsByClassName("mySlides");
-		  for (i = 0; i < x.length; i++) {
-		    x[i].style.display = "none";
-		  }
-		  myIndex++;
-		  if (myIndex > x.length) {myIndex = 1}
-		  x[myIndex-1].style.display = "block";
-		  setTimeout(carousel, 4000);
-		}
-
-		// Used to toggle the menu on small screens when clicking on the menu button
-		function mobileNav() {
-		  var x = document.getElementById("navDemo");
-		  if (x.className.indexOf("w3-show") == -1) {
-		    x.className += " w3-show";
-		  } else {
-		    x.className = x.className.replace(" w3-show", "");
-		  }
-		}
-
-		// When the user clicks anywhere outside of the modal, close it
-		var modal = document.getElementById('ticketModal');
-		window.onclick = function(event) {
-		  if (event.target == modal) {
-		    modal.style.display = "none";
-		  }
-		}
-</script>
-
 </body>
 </html>
