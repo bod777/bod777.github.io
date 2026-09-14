@@ -1,0 +1,324 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Project from '../components/Project.astro';
+import portrait from '../assets/brid.jpg';
+
+const LINKEDIN = 'https://www.linkedin.com/in/brid-o-donnell/';
+const GITHUB = 'https://github.com/bod777';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+
+const groups = [
+  { key: 'brother', heading: 'For my brother' },
+  { key: 'mum', heading: 'For my mum' },
+  { key: 'friends', heading: 'For my friends' },
+  { key: 'colleague', heading: 'Inspired by a colleague' },
+  { key: 'me', heading: 'For me' },
+] as const;
+
+// Flip sides continuously down the page, not per group.
+let n = 0;
+const sections = groups.map((g) => ({
+  ...g,
+  items: projects.filter((p) => p.data.group === g.key).map((project) => ({ project, flip: n++ % 2 === 1 })),
+}));
+---
+
+<Base
+  title="Bríd O'Donnell"
+  description="Bríd O'Donnell builds little apps for the people they care about: games for friends, a maths trainer, a cinema tracker and more."
+>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="intro">
+        <p class="hello">Hi, I'm Bríd <span class="say">(pronounced “Breed”)</span></p>
+        <h1>I build little apps for <em>the people I care about.</em></h1>
+        <p class="lede">
+          A cinema tracker for my brother, a plant finder for my mum, party games for my friends, maths reps inspired
+          by a colleague, and a budget app for me, because I count too.
+        </p>
+        <p class="actions">
+          <a class="button" href="#work">See what I've made</a>
+          <a class="quiet" href={LINKEDIN} rel="me noopener">Say hello on LinkedIn <span aria-hidden="true">↗</span></a>
+          <a class="quiet" href={GITHUB} rel="me noopener">GitHub <span aria-hidden="true">↗</span></a>
+        </p>
+      </div>
+      <div class="portrait">
+        <Image
+          src={portrait}
+          alt="Bríd in black and white, leaning an arm on a wooden bannister and smiling at someone out of shot."
+          widths={[360, 540, 920]}
+          sizes="(min-width: 60rem) 30vw, 14rem"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </header>
+
+  <main id="work">
+    {sections.map((section) => (
+      <section class="group" aria-labelledby={`group-${section.key}`}>
+        <h2 id={`group-${section.key}`}>{section.heading}</h2>
+        <div class="projects">
+          {section.items.map(({ project, flip }) => (
+            <Project project={project} flip={flip} />
+          ))}
+        </div>
+      </section>
+    ))}
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="signoff">That's everything so far. There's usually another one on the way.</p>
+      <p class="footer-links">
+        <a href={LINKEDIN} rel="me noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+        <a href={GITHUB} rel="me noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </p>
+      <p class="small">© 2026 Bríd O'Donnell</p>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  .hero {
+    background: var(--cobalt);
+    color: var(--on-cobalt);
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    display: grid;
+  }
+
+  .intro {
+    padding-block: clamp(2rem, 6vw, 4rem) clamp(4rem, 10vw, 7.5rem);
+  }
+
+  .portrait {
+    order: -1;
+    width: min(60%, 14rem);
+    margin-top: clamp(4rem, 14vw, 5.5rem);
+  }
+
+  .portrait img {
+    width: 100%;
+    aspect-ratio: 920 / 1076;
+    object-fit: cover;
+    border-radius: 999px 999px 1.25rem 1.25rem;
+    box-shadow: 0 30px 60px -30px oklch(0.15 0.1 266 / 0.6);
+  }
+
+  @media (min-width: 60rem) {
+    .hero-inner {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: center;
+    }
+    /* Laptop screens are wide but short: size the hero by height too, so the
+       buttons are on screen without scrolling. */
+    .intro {
+      padding-block: clamp(4rem, 13vh, 9rem) clamp(2.5rem, 8vh, 7rem);
+    }
+    .intro h1 {
+      font-size: clamp(2.75rem, min(6vw + 1rem, 10.5vh), 6rem);
+    }
+    .intro .lede {
+      margin-top: clamp(1rem, 2.5vh, 1.5rem);
+    }
+    .intro .actions {
+      margin-top: clamp(1.25rem, 3.5vh, 2.25rem);
+    }
+    .portrait {
+      order: 0;
+      width: 100%;
+      margin-top: 0;
+    }
+    .portrait img {
+      max-height: 76vh;
+      width: auto;
+      margin-inline: auto;
+    }
+  }
+
+  .hello {
+    font-family: var(--serif);
+    font-size: clamp(1.25rem, 1vw + 1rem, 1.6rem);
+    color: var(--on-cobalt-soft);
+  }
+
+  .say {
+    font-family: var(--sans);
+    font-size: 0.75em;
+    white-space: nowrap;
+  }
+
+  h1 {
+    margin-top: 0.75rem;
+    font-size: clamp(2.75rem, 6vw + 1rem, 6rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    max-width: 20ch;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--blush);
+  }
+
+  .lede {
+    margin-top: 1.5rem;
+    max-width: 44ch;
+    font-size: clamp(1.15rem, 0.6vw + 1rem, 1.4rem);
+    line-height: 1.5;
+    color: var(--on-cobalt-soft);
+  }
+
+  .actions {
+    margin-top: 2.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+  }
+
+  .button {
+    display: inline-block;
+    background: var(--on-cobalt);
+    color: var(--cobalt-ink);
+    font-weight: 650;
+    text-decoration: none;
+    padding: 0.85rem 1.4rem;
+    border-radius: 999px;
+    transition:
+      transform 250ms var(--ease-out),
+      background-color 250ms var(--ease-out);
+  }
+
+  .button:hover {
+    background: var(--blush);
+    transform: translateY(-2px);
+  }
+
+  .quiet {
+    font-weight: 600;
+    text-underline-offset: 0.25em;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: color-mix(in oklch, var(--on-cobalt) 40%, transparent);
+    padding-block: 0.5rem;
+  }
+
+  .quiet:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .hero :focus-visible {
+    outline-color: var(--blush);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .intro > * {
+      animation: rise 900ms var(--ease-out) both;
+    }
+    .intro > :nth-child(2) {
+      animation-delay: 90ms;
+    }
+    .intro > :nth-child(3) {
+      animation-delay: 180ms;
+    }
+    .intro > :nth-child(4) {
+      animation-delay: 270ms;
+    }
+    .portrait {
+      animation: rise 1100ms 120ms var(--ease-out) both;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+  }
+
+  main {
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    padding-block: clamp(4rem, 10vw, 8rem) clamp(2rem, 6vw, 4rem);
+  }
+
+  .group + .group {
+    margin-top: clamp(5rem, 12vw, 10rem);
+  }
+
+  h2 {
+    font-size: clamp(2.25rem, 4vw + 1rem, 4rem);
+    color: var(--cobalt-ink);
+    padding-bottom: clamp(1rem, 2vw, 1.5rem);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .projects {
+    margin-top: clamp(2.5rem, 6vw, 4.5rem);
+    display: grid;
+    gap: clamp(4rem, 10vw, 8rem);
+  }
+
+  .footer {
+    background: var(--cobalt);
+    color: var(--on-cobalt);
+    margin-top: clamp(4rem, 10vw, 8rem);
+  }
+
+  .footer-inner {
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    padding-block: clamp(3.5rem, 8vw, 6rem);
+  }
+
+  .signoff {
+    font-family: var(--serif);
+    font-size: clamp(1.75rem, 2.5vw + 1rem, 3rem);
+    line-height: 1.15;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+
+  .footer-links {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .footer-links a {
+    text-underline-offset: 0.25em;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: color-mix(in oklch, var(--on-cobalt) 40%, transparent);
+    padding-block: 0.4rem;
+  }
+
+  .footer-links a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .footer :focus-visible {
+    outline-color: var(--blush);
+  }
+
+  .small {
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    color: var(--on-cobalt-soft);
+  }
+</style>

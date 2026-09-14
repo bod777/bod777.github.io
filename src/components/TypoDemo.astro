@@ -1,0 +1,105 @@
+---
+// The real mistakes from the old spreadsheet that Budget was built to stop.
+---
+
+<div class="demo">
+  <p class="label">From the old spreadsheet</p>
+  <ul>
+    <li>
+      <span class="payee">Tesco</span>
+      <span class="vs" aria-label="versus">/</span>
+      <span class="payee">Tesco<mark>s</mark></span>
+    </li>
+    <li>
+      <span class="payee">Ant<mark>hrop</mark>ic</span>
+      <span class="vs" aria-label="versus">/</span>
+      <span class="payee">Ant<mark>roph</mark>ic</span>
+    </li>
+    <li>
+      <span class="payee">Brunch payback</span>
+      <span class="twice">logged twice</span>
+    </li>
+  </ul>
+  <p class="warning">
+    <span aria-hidden="true">!</span>
+    Same payee, same amount, within three days? Now it asks before saving.
+  </p>
+</div>
+
+<style>
+  .demo {
+    width: min(100%, 26rem);
+    color: oklch(0.28 0.04 155);
+    padding-block: clamp(0.5rem, 2vw, 1.5rem);
+  }
+
+  .label {
+    font-weight: 650;
+    font-size: 0.95rem;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0.9rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 0.75rem;
+    background: white;
+    border-radius: 0.8rem;
+    padding: 0.75rem 1rem;
+    font-family: var(--serif);
+    font-size: clamp(1.1rem, 1vw + 0.9rem, 1.35rem);
+    box-shadow: 0 1px 2px oklch(0.3 0.05 155 / 0.12);
+  }
+
+  mark {
+    background: oklch(0.9 0.1 90);
+    color: inherit;
+    border-radius: 0.2em;
+    padding-inline: 0.08em;
+  }
+
+  .vs {
+    color: oklch(0.55 0.03 155);
+  }
+
+  .twice {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: oklch(0.48 0.12 30);
+  }
+
+  .warning {
+    margin-top: 1.1rem;
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+    background: oklch(0.36 0.07 155);
+    color: oklch(0.97 0.02 155);
+    border-radius: 0.8rem;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 550;
+    line-height: 1.35;
+  }
+
+  .warning span {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background: oklch(0.88 0.12 90);
+    color: oklch(0.3 0.06 155);
+    font-weight: 800;
+  }
+</style>

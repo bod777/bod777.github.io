@@ -1,0 +1,180 @@
+---
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import RankingDemo from './RankingDemo.astro';
+import TypoDemo from './TypoDemo.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  // Alternate which side the screenshot sits on down the page.
+  flip?: boolean;
+}
+
+const { project, flip = false } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+
+// Projects without a screenshot get a small illustration of the idea instead.
+const demos: Record<string, any> = { priorities: RankingDemo, budget: TypoDemo };
+const Demo = demos[project.id];
+---
+
+<article class:list={['project', { flip }]} id={project.id} aria-labelledby={`${project.id}-title`}>
+  <div class="words">
+    <h3 id={`${project.id}-title`}>{data.title}</h3>
+    <p class="summary">{data.summary}</p>
+    <div class="story"><Content /></div>
+    <p class="built">Built with {data.builtWith.join(', ')}</p>
+    <p class="links">
+      {data.live && (
+        <a href={data.live} rel="noopener">
+          Try it<span class="visually-hidden">: {data.title}</span> <span aria-hidden="true">↗</span>
+        </a>
+      )}
+      {data.code && (
+        <a href={data.code} rel="noopener">
+          Code<span class="visually-hidden"> for {data.title}</span> <span aria-hidden="true">↗</span>
+        </a>
+      )}
+      {data.status && <span class="status">{data.status}</span>}
+    </p>
+  </div>
+
+  <figure class:list={['plate', data.frame]} style={`--plate: ${data.plate}`}>
+    {data.image ? (
+      <Image
+        src={data.image}
+        alt={data.imageAlt ?? ''}
+        widths={data.frame === 'phone' ? [360, 520, 720] : [640, 960, 1440]}
+        sizes={data.frame === 'phone' ? '(min-width: 60rem) 26rem, 80vw' : '(min-width: 60rem) 44rem, 92vw'}
+        loading="lazy"
+      />
+    ) : Demo ? (
+      <Demo />
+    ) : null}
+  </figure>
+</article>
+
+<style>
+  .project {
+    display: grid;
+    gap: clamp(1.75rem, 4vw, 3rem);
+    align-items: center;
+  }
+
+  @media (min-width: 60rem) {
+    .project {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: clamp(3rem, 6vw, 6rem);
+    }
+    .flip {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    }
+    .flip .words {
+      order: 2;
+    }
+  }
+
+  .words {
+    max-width: 36rem;
+  }
+
+  h3 {
+    font-size: clamp(1.75rem, 2.2vw + 1rem, 2.5rem);
+  }
+
+  .summary {
+    margin-top: 0.5rem;
+    font-size: 1.15em;
+    font-weight: 560;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .story {
+    margin-top: 1.25rem;
+    color: var(--ink-soft);
+  }
+
+  .story :global(p + p) {
+    margin-top: 0.9em;
+  }
+
+  .built {
+    margin-top: 1.5rem;
+    font-size: 0.9em;
+    color: var(--ink-soft);
+  }
+
+  .links {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    font-weight: 600;
+  }
+
+  .links a {
+    color: var(--cobalt-ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.25em;
+    text-decoration-color: color-mix(in oklch, var(--cobalt-ink) 35%, transparent);
+    transition: text-decoration-color 200ms var(--ease-out);
+    padding-block: 0.35rem;
+  }
+
+  .links a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .status {
+    padding-block: 0.35rem;
+    color: var(--ink-soft);
+  }
+
+  .plate {
+    margin: 0;
+    background: var(--plate);
+    border-radius: clamp(1rem, 2vw, 1.75rem);
+    padding: clamp(1rem, 3.5vw, 2.75rem);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  .plate img {
+    width: 100%;
+    border-radius: clamp(0.5rem, 1vw, 0.75rem);
+    box-shadow:
+      0 1px 2px oklch(0 0 0 / 0.25),
+      0 18px 40px -12px oklch(0 0 0 / 0.45);
+  }
+
+  .plate.phone img {
+    width: min(100%, 26rem);
+  }
+
+  /* Screenshots settle in as they scroll into view. Without support for
+     scroll-driven animations they're simply there. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .plate > :global(*) {
+        animation: settle linear both;
+        animation-timeline: view();
+        animation-range: entry 0% cover 35%;
+      }
+    }
+  }
+
+  @keyframes settle {
+    from {
+      transform: translateY(2.5rem) scale(0.97);
+      opacity: 0.35;
+    }
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+</style>

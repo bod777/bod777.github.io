@@ -1,0 +1,107 @@
+---
+// A made-up round of Priorities, drawn in the game's own purple and pink.
+const cards = [
+  { text: 'A week with no emails', by: 'Niamh' },
+  { text: 'Front-row concert tickets', by: 'Seán' },
+  { text: 'A proper Sunday lie-in', by: 'Bríd' },
+  { text: 'Free coffee for a year', by: 'Ciara' },
+];
+---
+
+<div class="demo" role="img" aria-label="An example round of Priorities: Aoife has secretly ranked four cards, from a week with no emails at the top to free coffee for a year at the bottom, and the others guess the order.">
+  <p class="who"><span class="avatar">A</span> Aoife ranked these</p>
+  <ol>
+    {cards.map((card, i) => (
+      <li style={`--i: ${i}`}>
+        <span class="rank">{i + 1}</span>
+        <span class="text">{card.text}</span>
+        <span class="by">by {card.by}?</span>
+      </li>
+    ))}
+  </ol>
+  <p class="guess">Can you guess the order?</p>
+</div>
+
+<style>
+  .demo {
+    width: min(100%, 26rem);
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    color: oklch(0.3 0.03 300);
+    padding-block: clamp(0.5rem, 2vw, 1.5rem);
+  }
+
+  .who {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 650;
+    font-size: 0.95rem;
+  }
+
+  .avatar {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, oklch(0.6 0.2 300), oklch(0.68 0.2 350));
+    color: white;
+    font-size: 0.85rem;
+  }
+
+  ol {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 0.9rem;
+    align-items: center;
+    background: white;
+    border-radius: 0.9rem;
+    padding: 0.8rem 1rem;
+    box-shadow: 0 1px 2px oklch(0.4 0.1 300 / 0.12), 0 8px 20px -10px oklch(0.4 0.15 300 / 0.35);
+    transform: rotate(calc((var(--i) - 1.5) * 0.6deg));
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  li:hover {
+    transform: translateX(0.4rem) rotate(0deg);
+  }
+
+  .rank {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.6rem;
+    background: oklch(0.5 0.2 300);
+    color: white;
+    font-weight: 700;
+  }
+
+  .text {
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  .by {
+    font-size: 0.8rem;
+    color: oklch(0.47 0.05 300);
+  }
+
+  .guess {
+    margin-top: 1rem;
+    font-weight: 650;
+    font-size: 0.95rem;
+    color: oklch(0.45 0.19 300);
+  }
+</style>
