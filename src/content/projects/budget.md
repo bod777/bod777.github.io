@@ -4,7 +4,6 @@ group: me
 order: 6
 summary: A budgeting app that catches my mistakes as I make them.
 builtWith: [TypeScript, Fastify, React, Postgres]
-code: https://github.com/bod777/budget
 plate: "oklch(0.94 0.03 150)"
 ---
 

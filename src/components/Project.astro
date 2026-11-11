@@ -25,6 +25,7 @@ const Demo = demos[project.id];
     <p class="summary">{data.summary}</p>
     <div class="story"><Content /></div>
     <p class="built">Built with {data.builtWith.join(', ')}</p>
+    {(data.live || data.code || data.status) && (
     <p class="links">
       {data.live && (
         <a href={data.live} rel="noopener">
@@ -38,6 +39,7 @@ const Demo = demos[project.id];
       )}
       {data.status && <span class="status">{data.status}</span>}
     </p>
+    )}
   </div>
 
   <figure class:list={['plate', data.frame]} style={`--plate: ${data.plate}`}>
